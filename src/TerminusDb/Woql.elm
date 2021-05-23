@@ -78,7 +78,7 @@ response context =
                 , Decode.succeed []
                 ]
             )
-            (Schema.field context Prefix.None "bindings" (decodeBindings context))
+            (Schema.field context Prefix.Unprefixed "bindings" (decodeBindings context))
             (Decode.field "inserts" Decode.int)
             (Decode.field "deletes" Decode.int)
             (Decode.field "transaction_retry_count" Decode.int)

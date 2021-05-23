@@ -20,9 +20,9 @@ type alias Context =
 
 
 type Prefix
-    = Api
+    = Unprefixed
+    | Api
     | Doc
-    | None
     | Owl
     | Rdf
     | Rdfs
@@ -42,14 +42,14 @@ context =
 string : Prefix -> String
 string prefix =
     case prefix of
+        Unprefixed ->
+            ""
+
         Api ->
             "api"
 
         Doc ->
             "doc"
-
-        None ->
-            ""
 
         Owl ->
             "owl"
@@ -91,14 +91,14 @@ encodeContext =
 uri : Prefix -> String
 uri prefix =
     case prefix of
+        Unprefixed ->
+            ""
+
         Api ->
             "http://terminusdb.com/schema/api"
 
         Doc ->
             "terminusdb:///data/"
-
-        None ->
-            ""
 
         Owl ->
             "http://www.w3.org/2002/07/owl#"
