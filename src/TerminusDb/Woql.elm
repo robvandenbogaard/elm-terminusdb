@@ -1,12 +1,12 @@
 module TerminusDb.Woql exposing
-    ( Request(..), request, CommitInfo, commitInfo, Response, response, Error(..), Status(..), Bindings
+    ( Request(..), request, CommitInfo, commitInfo, Response, response, success, Error(..), Bindings
     , Query(..), Subject, Predicate, Object, Graph, Value(..), Variables
     , expectJson
     )
 
 {-| Construct WOQL requests and read out responses using this module.
 
-@docs Request, request, CommitInfo, commitInfo, Response, response, Error, Status, Bindings
+@docs Request, request, CommitInfo, commitInfo, Response, response, success, Error, Bindings
 
 @docs Query, Subject, Predicate, Object, Graph, Value, Variables
 
@@ -36,7 +36,7 @@ commitInfo { author, message } =
 
 
 type alias Response =
-    { status : Status
+    { success : Bool
     , variables : List String
     , bindings : Bindings
     , inserts : Int
@@ -51,28 +51,27 @@ type Error
     | BadData String
 
 
-type Status
-    = Success
-    | Failure
-
-
 type alias Bindings =
     List (Dict String String)
+
+
+success : Prefix.Context -> Decoder Bool
+success context =
+    Schema.field context
+        Prefix.Api
+        "status"
+        (Decode.oneOf
+            [ Schema.value context Prefix.Api "success" True
+            , Schema.value context Prefix.Api "failure" False
+            ]
+        )
 
 
 response : Prefix.Context -> Decoder Response
 response context =
     Schema.requireType context Prefix.Api "WoqlResponse" <|
         Decode.map6 Response
-            (Schema.field context
-                Prefix.Api
-                "status"
-                (Decode.oneOf
-                    [ Schema.value context Prefix.Api "success" Success
-                    , Schema.value context Prefix.Api "failure" Failure
-                    ]
-                )
-            )
+            (success context)
             (Decode.oneOf
                 [ Schema.field context Prefix.Api "variable_names" (Decode.list Decode.string)
                 , Decode.succeed []
@@ -155,6 +154,7 @@ type Value
     = Var String
     | Node Prefix String
     | Literal String
+    | Datatype Schema.TranslatedText
 
 
 type alias Variables =
@@ -243,7 +243,7 @@ encodeSubQuery context query =
                 , ( "woql:subject", encodeValue subject )
                 , ( "woql:predicate", encodeValue predicate )
                 , ( "woql:object", encodeValue object )
-                , ( "woql:graph", encodeValue object )
+                , ( "woql:graph", encodeValue graph )
                 ]
 
             IdGen base key uri ->
@@ -309,6 +309,12 @@ encodeValue value =
 
         Literal s ->
             XsdEncode.string s
+
+        Datatype t ->
+            Encode.object
+                [ ( "@type", Encode.string "woql:Datatype" )
+                , ( "woql:datatype", XsdEncode.translatedText t )
+                ]
 
 
 expectJson : (Result Error a -> msg) -> Decoder a -> Http.Expect msg

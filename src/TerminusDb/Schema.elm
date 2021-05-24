@@ -1,11 +1,14 @@
 module TerminusDb.Schema exposing
     ( TranslatedText
     , Value(..)
+    , addTranslation
     , andMap
     , field
+    , literal
     , prefixed
     , requireType
     , translatedText
+    , translation
     , value
     )
 
@@ -100,6 +103,19 @@ field context prefix name decoder =
         |> Decode.oneOf
 
 
+literal : String -> Decoder Bool
+literal v =
+    Decode.string
+        |> Decode.andThen
+            (\v_ ->
+                if v_ == v then
+                    Decode.succeed True
+
+                else
+                    Decode.succeed False
+            )
+
+
 value : Prefix.Context -> Prefix -> String -> a -> Decoder a
 value context prefix name instance =
     Prefix.fromContext context (Prefix.uri prefix)
@@ -131,3 +147,13 @@ translatedText =
             [ Decode.andThen (\t -> Decode.succeed [ t ]) textDecoder
             , Decode.list textDecoder
             ]
+
+
+translation : String -> String -> TranslatedText
+translation =
+    Dict.singleton
+
+
+addTranslation : String -> String -> TranslatedText -> TranslatedText
+addTranslation =
+    Dict.insert

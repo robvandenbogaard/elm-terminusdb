@@ -8,6 +8,7 @@ module TerminusDb.Api.AddUser exposing
 import Http
 import Json.Decode as Decode
 import Json.Encode as Encode
+import TerminusDb.Schema as Schema
 import TerminusDb.Session exposing (Session)
 import TerminusDb.Woql as Woql
 import Url.Builder
@@ -49,7 +50,7 @@ command { server, database, context, token } { message, name, password, comment 
                     , ( "comment", Encode.string comment )
                     , ( "password", Encode.string password )
                     ]
-        , expect = Woql.expectJson message Decode.bool
+        , expect = Woql.expectJson message <| Schema.prefixed Woql.success
         , timeout = Nothing
         , tracker = Nothing
         }

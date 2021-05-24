@@ -2,19 +2,35 @@ module TerminusDb.Schema.Xsd.Encode exposing
     ( integer
     , nonNegativeInteger
     , string
+    , translatedText
     )
 
+import Dict
 import Json.Encode as Encode
 import TerminusDb.Schema as Schema
 import TerminusDb.Schema.Prefix as Prefix
 
 
 string : String -> Encode.Value
-string value =
+string text =
     Encode.object
-        [ ( "@value", Encode.string value )
+        [ ( "@value", Encode.string text )
         , ( "@type", Encode.string "xsd:string" )
         ]
+
+
+translation : ( String, String ) -> Encode.Value
+translation ( lang, text ) =
+    Encode.object
+        [ ( "@value", Encode.string text )
+        , ( "@type", Encode.string "xsd:string" )
+        , ( "@language", Encode.string lang )
+        ]
+
+
+translatedText : Schema.TranslatedText -> Encode.Value
+translatedText =
+    Encode.list translation << Dict.toList
 
 
 integer : Int -> Encode.Value
