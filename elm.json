@@ -6,6 +6,10 @@
     "version": "1.0.0",
     "exposed-modules": [
         "TerminusDb",
+        "TerminusDb.Api.AddUser",
+        "TerminusDb.Api.Connect",
+        "TerminusDb.Api.CreateDatabase",
+        "TerminusDb.Api.Query",
         "TerminusDb.Schema",
         "TerminusDb.Schema.Builder",
         "TerminusDb.Schema.Prefix",
@@ -14,11 +18,7 @@
         "TerminusDb.Schema.Xsd.Decode",
         "TerminusDb.Schema.Xsd.Encode",
         "TerminusDb.Session",
-        "TerminusDb.Woql",
-        "TerminusDb.Woql.Api.AddUser",
-        "TerminusDb.Woql.Api.Connect",
-        "TerminusDb.Woql.Api.CreateDatabase",
-        "TerminusDb.Woql.Api.Query"
+        "TerminusDb.Woql"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {
