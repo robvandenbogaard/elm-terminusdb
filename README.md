@@ -2,17 +2,10 @@
 
 A library for accessing TerminusDB databases from Elm.
 
-## Work in progress note
-
-Beware that this library is currently a work in progress, not yet ready for
-publication as a package. *The API is bound to undergo breaking changes at this
-point!*
-
-## Desirables before publishing as a package
-
-- [ ] Less ugly API
-- [ ] Documentation for all exposed modules
-- [ ] Examples
+In its current state this package has a lot to wish for regarding documentation
+and completeness. It is functional for querying though. I hope to improve things
+soon. In the mean time, the Bike example should do a good job covering how
+things work.
 
 ## API Implementation status
 
