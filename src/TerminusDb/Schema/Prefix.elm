@@ -1,8 +1,8 @@
 module TerminusDb.Schema.Prefix exposing
     ( Prefix(..), Context
-    , context, fromContext
+    , string, uri
+    , context, uriFromContext, fromContext
     , encodeContext, decodeContext
-    , string, uri, uriFromContext
     )
 
 {-| This module provides preset schema prefixes and helpers for handling prefix
@@ -10,9 +10,9 @@ contexts.
 
 @docs Prefix, Context
 
-@doc string, uri
+@docs string, uri
 
-@docs context, fromContext
+@docs context, uriFromContext, fromContext
 
 @docs encodeContext, decodeContext
 

@@ -1,10 +1,14 @@
 module TerminusDb.Schema.System.Document exposing
     ( Document
-    , decoder
-    , decoderFor
+    , decoder, decoderFor
     )
 
-{-| This module provides the System Document doctype and decoders.
+{-| This module provides the System Document type and decoders.
+
+@docs Document
+
+@docs decoder, decoderFor
+
 -}
 
 import Json.Decode as Decode exposing (Decoder)

@@ -1,15 +1,22 @@
 module TerminusDb exposing
-    ( Database(..)
-    , Graph(..)
-    , GraphType(..)
-    , Reference(..)
-    , RepoReference(..)
-    , databasePath
-    , graphPath
-    , graphType
-    , reference
-    , withRef
+    ( databasePath, graphPath, graphType
+    , reference, withRef
+    , Database(..), Graph(..), GraphType(..)
+    , RepoReference(..), Reference(..)
     )
+
+{-| This module provides types and helpers for building url paths to data on a
+TerminusDB server.
+
+@docs databasePath, graphPath, graphType
+
+@docs reference, withRef
+
+@docs Database, Graph, GraphType
+
+@docs RepoReference, Reference
+
+-}
 
 
 type Database

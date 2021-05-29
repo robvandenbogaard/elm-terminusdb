@@ -1,4 +1,4 @@
-module TerminusDb.Schema.Builder exposing (..)
+module TerminusDb.Schema.Builder exposing (description, doctype, graph, label, property)
 
 import TerminusDb.Schema as Schema
 import TerminusDb.Schema.Prefix exposing (..)
@@ -13,6 +13,8 @@ import TerminusDb.Woql exposing (..)
 # Doctype builder helpers
 
 @docs label, description, property
+
+@docs graph
 
 -}
 doctype : String -> List (Value -> Query) -> Query

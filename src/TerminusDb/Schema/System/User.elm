@@ -4,6 +4,11 @@ module TerminusDb.Schema.System.User exposing
     )
 
 {-| This module provides the System User type and decoders.
+
+@docs User
+
+@docs decoder, decoderFor
+
 -}
 
 import Json.Decode as Decode exposing (Decoder)
