@@ -1,5 +1,7 @@
 module Bikes exposing (main)
 
+-- Retrieving a list of bike journey data from a TerminusDB instance
+
 import Browser
 import Html
 import Html.Events
