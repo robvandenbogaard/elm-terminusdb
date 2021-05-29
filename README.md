@@ -121,8 +121,4 @@ Use query commands to get data from TerminusDB:
 Query.command session (Query.request GotList decoder query)
 ```
 
-Use queryCommit commands to post data to TerminusDB:
-
-``` elm
-
-```
+Use queryCommit commands to post data to TerminusDB with a commit message.
