@@ -4,6 +4,13 @@ module TerminusDb.Api.Query exposing
     , request
     )
 
+{-| This module provides the api call `command` to perform a TerminusDB query.
+
+It gets configured by the `Request` data type, constructed by the `request`
+helper.
+
+-}
+
 import Http
 import Json.Decode as Decode exposing (Decoder)
 import TerminusDb exposing (databasePath)

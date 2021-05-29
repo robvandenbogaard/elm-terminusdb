@@ -1,16 +1,34 @@
 module TerminusDb.Schema exposing
-    ( TranslatedText
-    , Value(..)
-    , addTranslation
-    , andMap
-    , field
-    , literal
-    , prefixed
-    , requireType
-    , translatedText
-    , translation
-    , value
+    ( Value(..), TranslatedText
+    , translation, translatedText, addTranslation
+    , field, literal, value
+    , prefixed, requireType, andMap
     )
+
+{-| This library covers working with Terminus (XSD, OWL) data schemata, such as
+decoding json responses with schema prefix contexts into validated values.
+
+
+# Values
+
+@docs Value, TranslatedText
+
+
+# Translated text helpers
+
+@docs translation, translatedText, addTranslation
+
+
+# Decoders
+
+@docs field, literal, value
+
+
+# Decoding helpers
+
+@docs prefixed, requireType, andMap
+
+-}
 
 import Dict exposing (Dict)
 import Json.Decode as Decode exposing (Decoder)
@@ -33,12 +51,18 @@ andMap =
     Decode.map2 (|>)
 
 
+{-| Decoder that first decodes the schema prefix context from a response and
+subsequently applies the provided context dependent decoder.
+-}
 prefixed : (Prefix.Context -> Decoder value) -> Decoder value
 prefixed decoder =
     Prefix.decodeContext
         |> Decode.andThen decoder
 
 
+{-| Decoder that requires a certain data type to match the type specified in the
+value that is being decoded.
+-}
 requireType : Prefix.Context -> Prefix -> String -> Decoder a -> Decoder a
 requireType context prefix type_ decoder =
     always
@@ -48,6 +72,8 @@ requireType context prefix type_ decoder =
         )
 
 
+{-| Helper for matching xml schema data types taking prefixes into account.
+-}
 match : Prefix.Context -> Prefix -> String -> String -> Decoder String
 match context expectedPrefix expectedType type_ =
     let
@@ -89,6 +115,8 @@ prefixAndType type_ =
             ( "", "" )
 
 
+{-| Decoder for fields taking the schema prefix context into account.
+-}
 field : Prefix.Context -> Prefix -> String -> Decoder a -> Decoder a
 field context prefix name decoder =
     Prefix.fromContext context (Prefix.uri prefix)
@@ -103,6 +131,8 @@ field context prefix name decoder =
         |> Decode.oneOf
 
 
+{-| Decoder for translating a specific literal string into a boolean value.
+-}
 literal : String -> Decoder Bool
 literal v =
     Decode.string
@@ -116,6 +146,9 @@ literal v =
             )
 
 
+{-| Decoder for translating a specific literal string value into a specified
+instance of a (custom) data type.
+-}
 value : Prefix.Context -> Prefix -> String -> a -> Decoder a
 value context prefix name instance =
     Prefix.fromContext context (Prefix.uri prefix)
@@ -134,6 +167,9 @@ value context prefix name instance =
         |> Decode.oneOf
 
 
+{-| Decoder for building a dictionary of translations from the list of @language
+@value pairs in the value that is being decoded.
+-}
 translatedText : Decoder TranslatedText
 translatedText =
     let
@@ -149,11 +185,16 @@ translatedText =
             ]
 
 
+{-| Create a single translation from a language identifier string and text
+content.
+-}
 translation : String -> String -> TranslatedText
 translation =
     Dict.singleton
 
 
+{-| Add a translation for a specified language to a translations dictionary.
+-}
 addTranslation : String -> String -> TranslatedText -> TranslatedText
 addTranslation =
     Dict.insert

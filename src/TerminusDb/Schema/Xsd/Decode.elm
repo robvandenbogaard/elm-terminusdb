@@ -1,9 +1,10 @@
-module TerminusDb.Schema.Xsd.Decode exposing
-    ( dateTime
-    , integer
-    , nonNegativeInteger
-    , string
-    )
+module TerminusDb.Schema.Xsd.Decode exposing (string, integer, nonNegativeInteger, dateTime)
+
+{-| This module provides decoders for Xsd data types.
+
+@docs string, integer, nonNegativeInteger, dateTime
+
+-}
 
 import Json.Decode as Decode exposing (Decoder)
 import TerminusDb.Schema as Schema

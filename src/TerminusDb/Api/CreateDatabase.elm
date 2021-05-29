@@ -10,6 +10,14 @@ module TerminusDb.Api.CreateDatabase exposing
     , withSchema
     )
 
+{-| This module provides the api call `command` to create a database on a
+TerminusDB server.
+
+It gets configured by the `Request` data type, constructed by the `request` and
+`with..` convenience helpers, for building the Request in pipeline style.
+
+-}
+
 import Http
 import Json.Decode as Decode
 import Json.Encode as Encode

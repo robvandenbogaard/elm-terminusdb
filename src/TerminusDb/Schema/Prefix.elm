@@ -1,14 +1,22 @@
 module TerminusDb.Schema.Prefix exposing
-    ( Context
-    , Prefix(..)
-    , context
-    , decodeContext
-    , encodeContext
-    , fromContext
-    , string
-    , uri
-    , uriFromContext
+    ( Prefix(..), Context
+    , context, fromContext
+    , encodeContext, decodeContext
+    , string, uri, uriFromContext
     )
+
+{-| This module provides preset schema prefixes and helpers for handling prefix
+contexts.
+
+@docs Prefix, Context
+
+@doc string, uri
+
+@docs context, fromContext
+
+@docs encodeContext, decodeContext
+
+-}
 
 import Dict exposing (Dict)
 import Json.Decode as Decode exposing (Decoder)
@@ -32,6 +40,8 @@ type Prefix
     | Xsd
 
 
+{-| Assemble a context from a list of prefixes.
+-}
 context : List Prefix -> Context
 context =
     List.foldl
@@ -39,6 +49,8 @@ context =
         Dict.empty
 
 
+{-| Return the Prefix as a String.
+-}
 string : Prefix -> String
 string prefix =
     case prefix of
@@ -88,6 +100,8 @@ encodeContext =
     Encode.dict identity Encode.string
 
 
+{-| Return the associated uri for a Prefix.
+-}
 uri : Prefix -> String
 uri prefix =
     case prefix of
@@ -122,12 +136,18 @@ uri prefix =
             "http://www.w3.org/2001/XMLSchema#"
 
 
+{-| Look up a prefix in the provided context and return the associated url,
+defaulting to the entire url.
+-}
 uriFromContext : Context -> String -> String
 uriFromContext c prefix =
     Dict.get prefix c
         |> Maybe.withDefault prefix
 
 
+{-| Get a list of alternatives to use as prefix for a specified schema url,
+falling back to the entire url, from the provided context.
+-}
 fromContext : Context -> String -> List String
 fromContext c u =
     Dict.foldl

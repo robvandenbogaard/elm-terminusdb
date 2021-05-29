@@ -1,9 +1,10 @@
-module TerminusDb.Schema.Xsd.Encode exposing
-    ( integer
-    , nonNegativeInteger
-    , string
-    , translatedText
-    )
+module TerminusDb.Schema.Xsd.Encode exposing (string, integer, nonNegativeInteger, translatedText)
+
+{-| This module provides encoders for Xsd data types.
+
+@docs string, integer, nonNegativeInteger, translatedText
+
+-}
 
 import Dict
 import Json.Encode as Encode

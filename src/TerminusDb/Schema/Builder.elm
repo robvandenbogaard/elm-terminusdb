@@ -5,6 +5,16 @@ import TerminusDb.Schema.Prefix exposing (..)
 import TerminusDb.Woql exposing (..)
 
 
+{-| This module exposes query builder functions to define new doctypes.
+
+@docs doctype
+
+
+# Doctype builder helpers
+
+@docs label, description, property
+
+-}
 doctype : String -> List (Value -> Query) -> Query
 doctype name queriesForType =
     let

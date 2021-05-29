@@ -1,9 +1,19 @@
 module TerminusDb.Api.AddUser exposing
-    ( Request
-    , command
-    , request
-    , withDescription
+    ( command, Request
+    , request, withDescription
     )
+
+{-| This module provides the api call `command` to add a user to the TerminusDB
+database.
+
+It gets configured by the `Request` data type, constructed by the `request` and
+`with..` convenience helpers, for building the Request in pipeline style.
+
+@docs command, Request
+
+@docs request, withDescription
+
+-}
 
 import Http
 import Json.Decode as Decode

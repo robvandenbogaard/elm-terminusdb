@@ -3,6 +3,9 @@ module TerminusDb.Session exposing
     , decoder
     )
 
+{-| This module provides the Session type and decoder
+-}
+
 import Json.Decode as Decode exposing (Decoder)
 import TerminusDb exposing (Database, Graph, RepoReference)
 import TerminusDb.Schema.Prefix as Prefix

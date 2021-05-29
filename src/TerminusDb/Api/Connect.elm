@@ -1,15 +1,19 @@
 module TerminusDb.Api.Connect exposing
-    ( Request
-    , asUser
-    , command
-    , request
-    , toDatabase
-    , toOrganisation
-    , toRepository
-    , toServer
-    , withGraph
-    , withPassword
+    ( command, Request
+    , request, toServer, asUser, withPassword, toOrganisation, toDatabase, toRepository, withGraph
     )
+
+{-| This module provides the api call `command` to connect with a TerminusDB
+server.
+
+It gets configured by the `Request` data type, constructed by the `request` and
+`with..` convenience helpers, for building the Request in pipeline style.
+
+@docs command, Request
+
+@docs request, toServer, asUser, withPassword, toOrganisation, toDatabase, toRepository, withGraph
+
+-}
 
 import Base64
 import Http
