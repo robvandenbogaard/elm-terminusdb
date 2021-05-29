@@ -23,10 +23,14 @@ import Json.Decode as Decode exposing (Decoder)
 import Json.Encode as Encode
 
 
+{-| The Context type alias is a dictionary, mapping prefix strings to schema uris.
+-}
 type alias Context =
     Dict String String
 
 
+{-| This type enumerates predefined schema prefixes.
+-}
 type Prefix
     = Unprefixed
     | Api
@@ -85,6 +89,8 @@ string prefix =
             "xsd"
 
 
+{-| Decode the `@context` json field into a Context dictionary.
+-}
 decodeContext : Decoder Context
 decodeContext =
     Decode.field "@context" (Decode.dict Decode.string)
@@ -95,6 +101,8 @@ decodeContext =
             )
 
 
+{-| Encode a Context dictionary into a json value.
+-}
 encodeContext : Context -> Encode.Value
 encodeContext =
     Encode.dict identity Encode.string
