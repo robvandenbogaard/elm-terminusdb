@@ -18,8 +18,8 @@ point!*
 
 - [X] connect
 - [X] createDatabase
-- [X] deleteDatabase
-- [X] deleteDatabaseForced
+- [ ] deleteDatabase
+- [ ] deleteDatabaseForced
 - [X] query
 - [X] addUser
 - [ ] getTriples (done excluding Turtle format parsing)
