@@ -1,9 +1,9 @@
-module TerminusDb.Session exposing
-    ( Session
-    , decoder
-    )
+module TerminusDb.Session exposing (Session, LogLevel, decoder)
 
 {-| This module provides the Session type and decoder
+
+@docs Session, LogLevel, decoder
+
 -}
 
 import Json.Decode as Decode exposing (Decoder)
