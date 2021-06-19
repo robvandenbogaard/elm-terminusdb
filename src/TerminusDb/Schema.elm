@@ -35,6 +35,8 @@ import Json.Decode as Decode exposing (Decoder)
 import TerminusDb.Schema.Prefix as Prefix exposing (Prefix)
 
 
+{-| Represents a literal or node reference value.
+-}
 type Value
     = StringLiteral String
     | IntLiteral Int
@@ -42,10 +44,18 @@ type Value
     | Reference Prefix String
 
 
+{-| A TranslatedText holds a dict with translations per language (keys should be
+language codes, values the translated text.)
+-}
 type alias TranslatedText =
     Dict String String
 
 
+{-| When a document has been partially decoded by a generic document decoder,
+andMap is used to decode the remaining fields needed to satisfy the specific
+document type, and apply them to the (partially applied) constructor, as seen in
+Schema.System.User.decode.
+-}
 andMap : Decoder a -> Decoder (a -> value) -> Decoder value
 andMap =
     Decode.map2 (|>)

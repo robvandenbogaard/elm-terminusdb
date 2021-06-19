@@ -24,17 +24,23 @@ import TerminusDb.Schema.Xsd.Decode as XsdDecode
 import TerminusDb.Schema.Xsd.Encode as XsdEncode
 
 
+{-| Represents meta information sent with a commit.
+-}
 type alias CommitInfo =
     { author : String
     , message : String
     }
 
 
+{-| CommitInfo encoder.
+-}
 commitInfo : CommitInfo -> Encode.Value
 commitInfo { author, message } =
     Encode.object [ ( "author", Encode.string author ), ( "message", Encode.string message ) ]
 
 
+{-| Represents a WOQL response record.
+-}
 type alias Response =
     { success : Bool
     , variables : List String
@@ -45,16 +51,22 @@ type alias Response =
     }
 
 
+{-| Represents the types of errors that can occur in WOQL requests.
+-}
 type Error
     = BadConnection String
     | BadResponse Int String
     | BadData String
 
 
+{-| Represents bindings of names (dict keys) to query variables (dict values).
+-}
 type alias Bindings =
     List (Dict String String)
 
 
+{-| Decoder for determining whether a response was successful.
+-}
 success : Prefix.Context -> Decoder Bool
 success context =
     Schema.field context
@@ -67,6 +79,8 @@ success context =
         )
 
 
+{-| WOQL Response decoder.
+-}
 response : Prefix.Context -> Decoder Response
 response context =
     Schema.requireType context Prefix.Api "WoqlResponse" <|
@@ -83,6 +97,8 @@ response context =
             (Decode.field "transaction_retry_count" Decode.int)
 
 
+{-| Decoder for WOQL response bindings.
+-}
 decodeBindings : Prefix.Context -> Decoder Bindings
 decodeBindings context =
     Decode.list
@@ -94,11 +110,15 @@ decodeBindings context =
         )
 
 
+{-| Represents a WOQL request with or without provided commit metadata.
+-}
 type Request
     = QueryRequest (List Prefix) Query
     | QueryCommitRequest (List Prefix) Query CommitInfo
 
 
+{-| Encodes a WOQL request with provided query.
+-}
 request : Request -> Encode.Value
 request r =
     case r of
@@ -114,6 +134,8 @@ request r =
                 ]
 
 
+{-| Represents the WOQL query language.
+-}
 type Query
     = Select Variables Query
     | And (List Query)
@@ -126,30 +148,45 @@ type Query
     | IdGen Base Key String
 
 
+{-| Represents the Subject within a triple.
+-}
 type alias Subject =
     Value
 
 
+{-| Represents the Predicate within a triple.
+-}
 type alias Predicate =
     Value
 
 
+{-| Represents the Object within a triple.
+-}
 type alias Object =
     Value
 
 
+{-| Represents the Graph within a quad (triple + graph).
+-}
 type alias Graph =
     Value
 
 
+{-| Represents the base for generating ids.
+-}
 type alias Base =
     Value
 
 
+{-| A list of key segment values for generating ids.
+-}
 type alias Key =
     List Value
 
 
+{-| Represents a WOQL query value, a variable, node reference, literal, or
+translated data type.
+-}
 type Value
     = Var String
     | Node Prefix String
@@ -157,28 +194,10 @@ type Value
     | Datatype Schema.TranslatedText
 
 
+{-| Represents a list of WOQL variable names.
+-}
 type alias Variables =
     List String
-
-
-doctype : String -> List Query -> Query
-doctype name qs =
-    And (qs ++ [])
-
-
-label : String -> Query
-label text =
-    And []
-
-
-description : String -> Query
-description text =
-    And []
-
-
-property : String -> Value -> List Query -> Query
-property name type_ qs =
-    And [ And qs ]
 
 
 encode : List Prefix -> Query -> Encode.Value
@@ -317,6 +336,9 @@ encodeValue value =
                 ]
 
 
+{-| Helper for building WOQL response expectations and adding error categories
+for easy handling in applications.
+-}
 expectJson : (Result Error a -> msg) -> Decoder a -> Http.Expect msg
 expectJson toMsg decoder =
     Http.expectStringResponse toMsg <|

@@ -109,6 +109,7 @@ type Reference
 
 {-| Helper for constructing repository reference url segments of a db url.
 -}
+reference : RepoReference -> List String
 reference ref =
     case ref of
         Local Main ->
@@ -132,5 +133,6 @@ reference ref =
 
 {-| Helper for adding repository reference url segments to a list of url segments.
 -}
+withRef : RepoReference -> List String -> List String
 withRef ref segments =
     segments ++ reference ref
