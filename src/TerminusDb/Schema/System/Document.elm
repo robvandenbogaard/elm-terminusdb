@@ -17,12 +17,17 @@ import TerminusDb.Schema.Prefix as Prefix exposing (Prefix)
 import Tuple
 
 
+{-| Represents the Document base type.
+-}
 type alias Document =
     { id : String
     , comment : Schema.TranslatedText
     }
 
 
+{-| Document decoder, decodes id and comment, as these are mandatory for any
+document.
+-}
 decoder : Prefix.Context -> Decoder Document
 decoder context =
     Decode.map2 Document
@@ -30,6 +35,8 @@ decoder context =
         (Schema.field context Prefix.Rdfs "comment" Schema.translatedText)
 
 
+{-| Decoder for documents based upon the base Document type.
+-}
 decoderFor : Prefix.Context -> Prefix -> String -> (String -> Schema.TranslatedText -> value) -> Decoder value
 decoderFor context prefix typeName documentType =
     Schema.requireType context prefix typeName <|

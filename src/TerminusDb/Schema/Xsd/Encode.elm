@@ -12,6 +12,8 @@ import TerminusDb.Schema as Schema
 import TerminusDb.Schema.Prefix as Prefix
 
 
+{-| Encoder for string values.
+-}
 string : String -> Encode.Value
 string text =
     Encode.object
@@ -20,6 +22,8 @@ string text =
         ]
 
 
+{-| Encoder for a single translation.
+-}
 translation : ( String, String ) -> Encode.Value
 translation ( lang, text ) =
     Encode.object
@@ -29,11 +33,15 @@ translation ( lang, text ) =
         ]
 
 
+{-| Encoder for translated text, a list of translations.
+-}
 translatedText : Schema.TranslatedText -> Encode.Value
 translatedText =
     Encode.list translation << Dict.toList
 
 
+{-| Encoder for generic integer values.
+-}
 integer : Int -> Encode.Value
 integer value =
     Encode.object
@@ -42,6 +50,8 @@ integer value =
         ]
 
 
+{-| Encoder for non negative integer values.
+-}
 nonNegativeInteger : Int -> Encode.Value
 nonNegativeInteger value =
     Encode.object
