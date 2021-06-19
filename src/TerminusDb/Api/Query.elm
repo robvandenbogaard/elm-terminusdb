@@ -1,6 +1,5 @@
 module TerminusDb.Api.Query exposing
-    ( Request
-    , command
+    ( command, Request
     , request
     )
 
@@ -8,6 +7,10 @@ module TerminusDb.Api.Query exposing
 
 It gets configured by the `Request` data type, constructed by the `request`
 helper.
+
+@docs command, Request
+
+@docs request
 
 -}
 
@@ -21,6 +24,8 @@ import TerminusDb.Woql as Woql
 import Url.Builder
 
 
+{-| Represents a Query request.
+-}
 type alias Request a msg =
     { message : Result Woql.Error a -> msg
     , decoder : Prefix.Context -> Decoder a
@@ -30,6 +35,8 @@ type alias Request a msg =
     }
 
 
+{-| Request builder with defaults.
+-}
 request : (Result Woql.Error a -> msg) -> (Prefix.Context -> Decoder a) -> Woql.Query -> Request a msg
 request message decoder query =
     { message = message
@@ -40,6 +47,9 @@ request message decoder query =
     }
 
 
+{-| Query request command builder, using the provided session for auth token,
+connection parameters and schema context.
+-}
 command : Session -> Request a msg -> Cmd msg
 command { server, database, context, token } { message, decoder, commit, prefixes, query } =
     let

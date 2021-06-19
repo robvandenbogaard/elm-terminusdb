@@ -24,11 +24,15 @@ import TerminusDb.Woql as Woql
 import Url.Builder
 
 
+{-| Helper for adding a description to a AddUser query.
+-}
 withDescription : String -> Request msg -> Request msg
 withDescription description req =
     { req | comment = description }
 
 
+{-| Represents an AddUser request.
+-}
 type alias Request msg =
     { message : Result Woql.Error Bool -> msg
     , name : String
@@ -37,6 +41,8 @@ type alias Request msg =
     }
 
 
+{-| Request builder with defaults.
+-}
 request : (Result Woql.Error Bool -> msg) -> { name : String, password : String } -> Request msg
 request message { name, password } =
     { message = message
@@ -46,6 +52,9 @@ request message { name, password } =
     }
 
 
+{-| AddUser query command builder, using the provided session for auth token,
+connection parameters and schema context.
+-}
 command : Session -> Request msg -> Cmd msg
 command { server, database, context, token } { message, name, password, comment } =
     Http.request

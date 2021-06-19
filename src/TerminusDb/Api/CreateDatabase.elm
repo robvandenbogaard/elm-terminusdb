@@ -1,13 +1,6 @@
 module TerminusDb.Api.CreateDatabase exposing
-    ( Request
-    , command
-    , forOrganisation
-    , local
-    , public
-    , request
-    , withDescription
-    , withLabel
-    , withSchema
+    ( command, Request
+    , request, withLabel, withDescription, forOrganisation, local, public, withSchema
     )
 
 {-| This module provides the api call `command` to create a database on a
@@ -15,6 +8,10 @@ TerminusDB server.
 
 It gets configured by the `Request` data type, constructed by the `request` and
 `with..` convenience helpers, for building the Request in pipeline style.
+
+@docs command, Request
+
+@docs request, withLabel, withDescription, forOrganisation, local, public, withSchema
 
 -}
 
@@ -28,36 +25,51 @@ import TerminusDb.Woql as Woql
 import Url.Builder
 
 
+{-| Helper for providing an organisation (database account) parameter to the
+request.
+-}
 forOrganisation : String -> Request msg -> Request msg
 forOrganisation org req =
     { req | organisation = org }
 
 
+{-| Helper for specifying if the target database is to be public.
+-}
 public : Bool -> Request msg -> Request msg
 public isPublic req =
     { req | isPublic = isPublic }
 
 
+{-| Helper for specifying whether the target database needs a schema.
+-}
 withSchema : Bool -> Request msg -> Request msg
 withSchema hasSchema req =
     { req | hasSchema = hasSchema }
 
 
+{-| Helper for specifying whether the target database is local or remote.
+-}
 local : Bool -> Request msg -> Request msg
 local isLocal req =
     { req | isLocal = isLocal }
 
 
+{-| Helper for providing the friendly name of the target database.
+-}
 withLabel : String -> Request msg -> Request msg
 withLabel label req =
     { req | label = label }
 
 
+{-| Helper for providing a comment describing the target database.
+-}
 withDescription : String -> Request msg -> Request msg
 withDescription description req =
     { req | comment = description }
 
 
+{-| Represents a CreateDatabase request.
+-}
 type alias Request msg =
     { message : Result Woql.Error Bool -> msg
     , name : String
@@ -70,6 +82,8 @@ type alias Request msg =
     }
 
 
+{-| Request builder with defaults.
+-}
 request : (Result Woql.Error Bool -> msg) -> String -> Request msg
 request message name =
     { message = message
@@ -83,6 +97,9 @@ request message name =
     }
 
 
+{-| CreateDatabase query command builder, using the provided session for auth
+token, connection parameters and schema context.
+-}
 command : Session -> Request msg -> Cmd msg
 command { server, database, context, token } { message, name, organisation, label, comment, isPublic, hasSchema, isLocal } =
     Http.request

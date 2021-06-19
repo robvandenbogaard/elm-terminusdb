@@ -24,41 +24,57 @@ import TerminusDb.Woql as Woql
 import Url.Builder
 
 
+{-| Helper for setting the target database name for a Connect Request.
+-}
 toDatabase : String -> Request msg -> Request msg
 toDatabase database req =
     { req | database = Just database }
 
 
+{-| Helper for setting the target database account for a Connect Request.
+-}
 toOrganisation : String -> Request msg -> Request msg
 toOrganisation organisation req =
     { req | organisation = Just organisation }
 
 
+{-| Helper for specifying a repository reference scope session default.
+-}
 toRepository : RepoReference -> Request msg -> Request msg
 toRepository repository req =
     { req | repository = repository }
 
 
+{-| Helper for setting the database server address for a Connect Request.
+-}
 toServer : String -> Request msg -> Request msg
 toServer server req =
     { req | server = server }
 
 
+{-| Helper for setting a Graph scope session default.
+-}
 withGraph : Graph -> Request msg -> Request msg
 withGraph graph req =
     { req | graph = graph }
 
 
+{-| Helper for specifying a user account for the Connect Request.
+-}
 asUser : String -> Request msg -> Request msg
 asUser username req =
     { req | username = username }
 
 
+{-| Helper for providing a password to a Connect Request configuration.
+-}
 withPassword : String -> Request msg -> Request msg
 withPassword password req =
     { req | password = password }
 
 
+{-| Represents parameters for a Connect request.
+-}
 type alias Request msg =
     { message : Result Woql.Error Session -> msg
     , server : String
@@ -71,6 +87,8 @@ type alias Request msg =
     }
 
 
+{-| Request builder with defaults.
+-}
 request : (Result Woql.Error Session -> msg) -> Request msg
 request message =
     { message = message
@@ -84,6 +102,8 @@ request message =
     }
 
 
+{-| Connect request command builder, using the parameters from provided Request.
+-}
 command : Request msg -> Cmd msg
 command { message, server, organisation, database, repository, graph, username, password } =
     let
@@ -110,6 +130,8 @@ command { message, server, organisation, database, repository, graph, username, 
         }
 
 
+{-| Helper for building authorization tokens.
+-}
 authorizationToken : String -> String -> String
 authorizationToken username password =
     Base64.encode (username ++ ":" ++ password)
