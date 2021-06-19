@@ -54,10 +54,10 @@ type Graph
     | CustomGraph String GraphType
 
 
-{-| The Instance GraphType holds the actual data of a database, where a Schema
-graph describes the constraints the data should adhere to (the types). I guess
-I need to read more on or ask around about the Inference graphs, because I
-realise I don't exactly know its role.
+{-| Instance represents the instance graph which holds the actual content data
+in the graph database, where a Schema graph describes the constraints the data
+should adhere to (the types). I guess I need to read more on or ask around about
+Inference graphs, because I realise I don't exactly know their role.
 -}
 type GraphType
     = Instance
@@ -65,6 +65,9 @@ type GraphType
     | Inference
 
 
+{-| Helper function for contructing the graph segements of a db url.
+-}
+graphPath : Graph -> List String
 graphPath g =
     case g of
         MainGraph t ->
@@ -74,6 +77,9 @@ graphPath g =
             [ c, graphType t ]
 
 
+{-| Returns the name (string) of the GraphType provided.
+-}
+graphType : GraphType -> String
 graphType t =
     case t of
         Instance ->
@@ -86,17 +92,23 @@ graphType t =
             "inference"
 
 
+{-| Represents a Local or Remote repository with branch/commit.
+-}
 type RepoReference
     = Local Reference
     | Remote String Reference
 
 
+{-| Represents a branch or specific commit.
+-}
 type Reference
     = Main
     | Branch String
     | Commit String
 
 
+{-| Helper for constructing repository reference url segments of a db url.
+-}
 reference ref =
     case ref of
         Local Main ->
@@ -118,5 +130,7 @@ reference ref =
             [ remote, "commit", c ]
 
 
+{-| Helper for adding repository reference url segments to a list of url segments.
+-}
 withRef ref segments =
     segments ++ reference ref
