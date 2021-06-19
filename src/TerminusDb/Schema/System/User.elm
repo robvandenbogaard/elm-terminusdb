@@ -7,7 +7,7 @@ module TerminusDb.Schema.System.User exposing
 
 @docs User
 
-@docs decoder, decoderFor
+@docs decoder
 
 -}
 
